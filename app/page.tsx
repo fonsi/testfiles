@@ -77,6 +77,13 @@ export default function Home() {
         </CardDescription>
         <GenerateButton href="/generate-txt">Generate TXT</GenerateButton>
       </Card>
+      <Card>
+        <CardTitle>CSV Generator</CardTitle>
+        <CardDescription>
+          Generate dummy CSV files of any size with random data.
+        </CardDescription>
+        <GenerateButton href="/generate-csv">Generate CSV</GenerateButton>
+      </Card>
     </Grid>
   );
 }

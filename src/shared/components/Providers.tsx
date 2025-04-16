@@ -1,7 +1,7 @@
 'use client';
 
 import { ThemeProvider } from 'styled-components';
-import { theme } from '@/shared/styles/global';
+import { theme } from '@/shared/styles/theme';
 
 interface ProvidersProps {
   children: React.ReactNode;

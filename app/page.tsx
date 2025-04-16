@@ -63,6 +63,13 @@ export default function Home() {
         </CardDescription>
         <GenerateButton href="/generate-jpg">Generate JPG</GenerateButton>
       </Card>
+      <Card>
+        <CardTitle>PNG Generator</CardTitle>
+        <CardDescription>
+          Generate dummy PNG images of any size with customizable dimensions.
+        </CardDescription>
+        <GenerateButton href="/generate-png">Generate PNG</GenerateButton>
+      </Card>
     </Grid>
   );
 }

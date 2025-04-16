@@ -70,6 +70,13 @@ export default function Home() {
         </CardDescription>
         <GenerateButton href="/generate-png">Generate PNG</GenerateButton>
       </Card>
+      <Card>
+        <CardTitle>TXT Generator</CardTitle>
+        <CardDescription>
+          Generate dummy text files of any size with random content.
+        </CardDescription>
+        <GenerateButton href="/generate-txt">Generate TXT</GenerateButton>
+      </Card>
     </Grid>
   );
 }

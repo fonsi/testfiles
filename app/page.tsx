@@ -84,6 +84,13 @@ export default function Home() {
         </CardDescription>
         <GenerateButton href="/generate-csv">Generate CSV</GenerateButton>
       </Card>
+      <Card>
+        <CardTitle>XML Generator</CardTitle>
+        <CardDescription>
+          Generate dummy XML files of any size with customizable elements and attributes.
+        </CardDescription>
+        <GenerateButton href="/generate-xml">Generate XML</GenerateButton>
+      </Card>
     </Grid>
   );
 }

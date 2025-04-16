@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 interface GeneratePageProps {
   fileType: string;
-  onGenerate: (size: number) => Promise<void>;
+  onGenerate: (size: number, options?: { elements?: number; attributes?: number }) => Promise<void>;
 }
 
 const scales = [
@@ -146,11 +146,62 @@ const Button = styled.button`
   }
 `;
 
+const OptionsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing.medium};
+  margin-top: ${({ theme }) => theme.spacing.medium};
+`;
+
+const OptionRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${({ theme }) => theme.spacing.medium};
+`;
+
+const OptionLabel = styled.label`
+  font-size: 1rem;
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+const OptionInput = styled.input`
+  width: 80px;
+  height: 40px;
+  padding: 0 ${({ theme }) => theme.spacing.small};
+  font-size: 1rem;
+  border: none;
+  border-bottom: 2px solid ${({ theme }) => theme.colors.border};
+  border-radius: 0;
+  background-color: transparent;
+  color: ${({ theme }) => theme.colors.text};
+  text-align: right;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  -moz-appearance: textfield;
+
+  &:focus {
+    outline: none;
+    border-bottom-color: ${({ theme }) => theme.colors.primary};
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
 export const GeneratePage: React.FC<GeneratePageProps> = ({ fileType, onGenerate }) => {
   const [size, setSize] = useState<number>(100);
   const [selectedScale, setSelectedScale] = useState<number>(1024); // Default to KB
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string>('');
+  const [elements, setElements] = useState<number>(5);
+  const [attributes, setAttributes] = useState<number>(3);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -158,9 +209,10 @@ export const GeneratePage: React.FC<GeneratePageProps> = ({ fileType, onGenerate
     setError('');
     
     try {
-      await onGenerate(size * selectedScale);
+      const options = fileType === 'XML' ? { elements, attributes } : undefined;
+      await onGenerate(size * selectedScale, options);
       setStatus('success');
-    } catch (err) {
+    } catch (err: unknown) {
       setStatus('error');
       setError(err instanceof Error ? err.message : 'An error occurred while generating the file');
     }
@@ -204,6 +256,33 @@ export const GeneratePage: React.FC<GeneratePageProps> = ({ fileType, onGenerate
               ))}
             </Select>
           </InputsContainer>
+
+          {fileType === 'XML' && (
+            <OptionsContainer>
+              <OptionRow>
+                <OptionLabel>Number of Elements:</OptionLabel>
+                <OptionInput
+                  type="number"
+                  value={elements}
+                  onChange={(e) => setElements(Number(e.target.value))}
+                  min="1"
+                  max="1000"
+                  disabled={status === 'loading'}
+                />
+              </OptionRow>
+              <OptionRow>
+                <OptionLabel>Attributes per Element:</OptionLabel>
+                <OptionInput
+                  type="number"
+                  value={attributes}
+                  onChange={(e) => setAttributes(Number(e.target.value))}
+                  min="0"
+                  max="10"
+                  disabled={status === 'loading'}
+                />
+              </OptionRow>
+            </OptionsContainer>
+          )}
 
           {status === 'error' && (
             <Error>{error}</Error>
